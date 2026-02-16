@@ -1,4 +1,4 @@
-name: doctests
+name: flake8
 on:
   push:
     branches: ['*']

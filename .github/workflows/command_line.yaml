@@ -1,4 +1,4 @@
-name: doctests
+name: command_line
 on:
   push:
     branches: ['*']
