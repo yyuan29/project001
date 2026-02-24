@@ -11,27 +11,35 @@ def compile_lines(text):
     Apply all markdown transformations to the input text.
 
     NOTE:
-    This function calls all of the functions you created above to convert the full markdown file into HTML.
-    This function also handles multiline markdown like <p> tags and <pre> tags;
-    because these are multiline commands, they cannot work with the line-by-line style of commands above.
+    This function calls all of the functions you created 
+    above to convert the full markdown file into HTML.
+    This function also handles multiline markdown 
+    like <p> tags and <pre> tags;
+    because these are multiline commands, they cannot work 
+    with the line-by-line style of commands above.
 
     NOTE:
     The doctests are divided into two sets.
-    The first set of doctests below show how this function adds <p> tags and calls the functions above.
+    The first set of doctests below show how this 
+    function adds <p> tags and calls the functions above.
     Once you implement the functions above correctly,
     then this first set of doctests will pass.
 
     NOTE:
-    For your assignment, the most important thing to take away from these test cases is how multiline tests can be formatted.
+    For your assignment, the most important thing to take away 
+    from these test cases is how multiline tests can be formatted.
 
-    >>> compile_lines('This is a **bold** _italic_ `code` test.\nAnd *another line*!\n')
-    '<p>\nThis is a <b>bold</b> <i>italic</i> <code>code</code> test.\nAnd <i>another line</i>!\n</p>'
+    >>> compile_lines('This is a **bold** _italic_ `code` test.
+    \nAnd *another line*!\n')
+    '<p>\nThis is a <b>bold</b> <i>italic</i> <code>code</code> 
+    test.\nAnd <i>another line</i>!\n</p>'
 
     >>> compile_lines("""
     ... This is a **bold** _italic_ `code` test.
     ... And *another line*!
     ... """)
-    '\n<p>\nThis is a <b>bold</b> <i>italic</i> <code>code</code> test.\nAnd <i>another line</i>!\n</p>'
+    '\n<p>\nThis is a <b>bold</b> <i>italic</i> <code>code</code> 
+    test.\nAnd <i>another line</i>!\n</p>'
 
     >>> print(compile_lines("""
     ... This is a **bold** _italic_ `code` test.
@@ -66,7 +74,8 @@ def compile_lines(text):
 
     HINT:
     In order to get some of these test cases to pass,
-    you will have to both add new code and remove some of the existing code that I provide you.
+    you will have to both add new code and remove some 
+    of the existing code that I provide you.
 
     >>> print(compile_lines("""
     ... ```
@@ -137,7 +146,7 @@ def compile_lines(text):
         line = line.strip()
         if line=='':
             if in_paragraph:
-                line='</p>'
+                line='</p>' ##new_lines.append("</p>")
                 in_paragraph = False
         else:
             if line[0] != '#' and not in_paragraph:
