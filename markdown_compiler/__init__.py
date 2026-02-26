@@ -29,8 +29,7 @@ def compile_lines(text):
     For your assignment, the most important thing to take away 
     from these test cases is how multiline tests can be formatted.
 
-    >>> compile_lines('This is a **bold** _italic_ `code` test.
-    \nAnd *another line*!\n')
+    >>> compile_lines('This is a **bold** _italic_ `code` test.\nAnd *another line*!\n')
     '<p>\nThis is a <b>bold</b> <i>italic</i> <code>code</code> 
     test.\nAnd <i>another line</i>!\n</p>'
 
@@ -141,28 +140,63 @@ def compile_lines(text):
     '''
     lines = text.split('\n')
     new_lines = []
+
     in_paragraph = False
+    in_code = False 
+
     for line in lines:
-        line = line.strip()
-        if line=='':
+        print("line = ", line)
+        stripped = line.strip()
+        
+        if stripped == "```":
+            if in_code: 
+                new_lines.append("</pre>")
+                in_code = False 
+            else: 
+                new_lines.append("<pre>")
+                in_code = True 
+            continue
+        print("pos1")
+        print("line = ", line)
+        if in_code:
+            new_lines.append(line)
+            continue
+        print("pos2")
+        print("line = ", line)
+        if stripped=='':
             if in_paragraph:
-                line='</p>' ##new_lines.append("</p>")
+                new_lines.append("</p>")
                 in_paragraph = False
-        else:
-            if line[0] != '#' and not in_paragraph:
-                in_paragraph = True
-                line = '<p>\n'+line
-            line = compile_headers(line)
-            line = compile_strikethrough(line)
-            line = compile_bold_stars(line)
-            line = compile_bold_underscore(line)
-            line = compile_italic_star(line)
-            line = compile_italic_underscore(line)
-            line = compile_code_inline(line)
-            line = compile_images(line)
-            line = compile_links(line)
+            else: 
+                new_lines.append('')
+            continue
+
+        
+        if not in_paragraph and not stripped.startswith('#'):
+            new_lines.append("<p>")
+            in_paragraph = True
+
+        print("pos3")  
+        print("line = ", line) 
+        #line = stripped
+        #print("pos3a", line)
+        line = compile_headers(line)
+        print("pos3b = ", line)
+        line = compile_strikethrough(line)
+        line = compile_bold_stars(line)
+        line = compile_bold_underscore(line)
+        line = compile_italic_star(line)
+        line = compile_italic_underscore(line)
+        line = compile_code_inline(line)
+        line = compile_images(line)
+        line = compile_links(line)
         new_lines.append(line)
+        print("new_lines=", new_lines)
+    if in_paragraph: 
+        new_lines.append("</p>")
+
     new_text = '\n'.join(new_lines)
+
     return new_text
 
 
