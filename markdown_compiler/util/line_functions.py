@@ -32,7 +32,7 @@ def compile_headers(line):
     result = ""
     for i in range(6, 0, -1):
         prefix = '#' * i + " "
-        if line[:i+1] == prefix:
+        if line[:i + 1] == prefix:
             result = "<h" + f"{i}" + "> " + line[i + 1:] + "</h" + f"{i}" + ">"
     if result == "":
         return line
@@ -65,7 +65,7 @@ def compile_italic_star(line):
     result = ""
     i = 0
     while i < len(line):
-        if line[i:i+1] == "*" and line.find("*", i + 1) != -1:
+        if line[i:i + 1] == "*" and line.find("*", i + 1) != -1:
             end = line.find("*", i + 1)
             if end != -1:
                 result += "<i>" + line[i + 1: end] + "</i>"
@@ -104,7 +104,7 @@ def compile_italic_underscore(line):
         if line[i:i + 1] == "_" and line.find("_", i + 1) != -1:
             end = line.find("_", i + 1)
             if end != -1:
-                result += "<i>" + line[i+1: end] + "</i>"
+                result += "<i>" + line[i + 1: end] + "</i>"
                 i = end + 1
             else:
                 result += line[i]
@@ -143,7 +143,7 @@ def compile_strikethrough(line):
     i = 0
     while i < len(line):
         if line[i:i + 2] == "~~" and line.find("~~", i + 2) != -1:
-            end = line.find("~~", i+2)
+            end = line.find("~~", i + 2)
             if end != -1:
                 result += "<ins>" + line[i + 2: end] + "</ins>"
                 i = end + 2
@@ -380,7 +380,7 @@ def compile_images(line):
     i = 0
 
     while i < len(line):
-        if i + 1 < len(line) and line[i] == "!" and line[i+1] == "[":
+        if i + 1 < len(line) and line[i] == "!" and line[i + 1] == "[":
             close_b = line.find("]", i + 2)
 
             if close_b == -1:
