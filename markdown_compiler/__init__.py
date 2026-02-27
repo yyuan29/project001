@@ -21,34 +21,36 @@ def compile_lines(text):
     Apply all markdown transformations to the input text.
 
     NOTE:
-    This function calls all of the functions you created 
+    This function calls all of the functions you created
     above to convert the full markdown file into HTML.
     This function also handles multiline markdown
     like <p> tags and <pre> tags;
-    because these are multiline commands, they cannot work 
+    because these are multiline commands, they cannot work
     with the line-by-line style of commands above.
 
     NOTE:
     The doctests are divided into two sets.
-    The first set of doctests below show how this 
+    The first set of doctests below show how this
     function adds <p> tags and calls the functions above.
     Once you implement the functions above correctly,
     then this first set of doctests will pass.
 
     NOTE:
-    For your assignment, the most important thing to take away 
+    For your assignment, the most important thing to take away
     from these test cases is how multiline tests can be formatted.
 
-    >>> compile_lines('This is a **bold** _italic_ `code` test.\nAnd *another line*!\n')
+    >>> compile_lines('This is a **bold** _italic_
+    `code`
+    test.\nAnd *another line*!\n')
     '<p>\nThis is a <b>bold</b> <i>italic</i>
-    <code>code</code> 
+    <code>code</code>
     test.\nAnd <i>another line</i>!\n</p>'
 
     >>> compile_lines("""
     ... This is a **bold** _italic_ `code` test.
     ... And *another line*!
     ... """)
-    '\n<p>\nThis is a <b>bold</b> <i>italic</i> <code>code</code> 
+    '\n<p>\nThis is a <b>bold</b> <i>italic</i> <code>code</code>
     test.\nAnd <i>another line</i>!\n</p>'
 
     >>> print(compile_lines("""
@@ -84,7 +86,7 @@ def compile_lines(text):
 
     HINT:
     In order to get some of these test cases to pass,
-    you will have to both add new code and remove some 
+    you will have to both add new code and remove some
     of the existing code that I provide you.
 
     >>> print(compile_lines("""
@@ -153,34 +155,33 @@ def compile_lines(text):
     new_lines = []
 
     in_paragraph = False
-    in_code = False 
+    in_code = False
 
     for line in lines:
         stripped = line.strip()
         if stripped == "```":
-            if in_code: 
+            if in_code:
                 new_lines.append("</pre>")
                 new_lines.append("")
-                in_code = False 
-            else: 
-                if in_paragraph: 
+                in_code = False
+            else:
+                if in_paragraph:
                     new_lines.append("</p>")
-                    in_paragraph = False 
+                    in_paragraph = False
                 new_lines.append("<pre>")
-                in_code = True 
+                in_code = True
             continue
         if in_code:
             new_lines.append(line)
             continue
-        if stripped=='':
+        if stripped == '':
             if in_paragraph:
                 new_lines.append("</p>")
                 in_paragraph = False
-            else: 
+            else:
                 new_lines.append('')
             continue
 
-        
         if not in_paragraph and not stripped.startswith('#'):
             new_lines.append("<p>")
             in_paragraph = True
@@ -196,7 +197,7 @@ def compile_lines(text):
         line = compile_links(line)
         new_lines.append(line)
 
-    if in_paragraph: 
+    if in_paragraph:
         new_lines.append("</p>")
 
     new_text = '\n'.join(new_lines)
@@ -240,7 +241,7 @@ def markdown_to_html(markdown, add_css):
 <link rel="stylesheet" href="https://izbicki.me/css/code.css" />
 <link rel="stylesheet" href="https://izbicki.me/css/default.css" />
         '''
-    html+='''
+    html += '''
 </head>
 <body>
     '''+compile_lines(markdown)+'''
@@ -290,10 +291,13 @@ def convert_file(input_file, add_css):
     NOTE:
     It is difficult to write meaningful doctests for functions
     that deal with files.
-    This is because we would have to create a bunch of different files to do so.
+    This is because we would have to create a bunch
+    of different files to do so.
     Therefore, there are no tests for this function.
-    But we can still be confident that this function will work because 
-    of the extensive tests on the "helper functions" that this function depends on.
+    But we can still be confident that this function will
+    work because
+    of the extensive tests on the "helper functions" that this
+    function depends on.
     '''
 
     # validate that the input file is a markdown file

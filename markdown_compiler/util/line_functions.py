@@ -1,6 +1,8 @@
 '''
-Each of the functions in this file takes a single line of input and transforms the line in some way.
+Each of the functions in this file takes a single
+line of input and transforms the line in some way.
 '''
+
 
 def compile_headers(line):
     '''
@@ -9,7 +11,8 @@ def compile_headers(line):
     HINT:
     This is the simplest function to implement in this assignment.
     Use a slices to extract the first part of the line,
-    then use if statements to check if they match the appropriate header markdown commands.
+    then use if statements to check if they match the
+    appropriate header markdown commands.
 
     >>> compile_headers('# This is the main header')
     '<h1> This is the main header</h1>'
@@ -29,9 +32,9 @@ def compile_headers(line):
     result = ""
     for i in range(6, 0, -1):
         prefix = '#'*i + " "
-        if line[:i+1] == prefix: 
+        if line[:i+1] == prefix:
             result = "<h" + f"{i}" + "> " + line[i+1:] + "</h" + f"{i}" + ">"
-    if result == "": 
+    if result == "":
         return line
     return result
 
@@ -41,9 +44,11 @@ def compile_italic_star(line):
     Convert "*italic*" into "<i>italic</i>".
 
     HINT:
-    Italics require carefully tracking the beginning and ending positions of the text to be replaced.
+    Italics require carefully tracking the beginning and ending positions
+    of the text to be replaced.
     This is similar to the `delete_HTML` function that we implemented in class.
-    It's a tiny bit more complicated since we are not just deleting substrings from the text,
+    It's a tiny bit more complicated since we are not
+    just deleting substrings from the text,
     but also adding replacement substrings.
 
     >>> compile_italic_star('*This is italic!* This is not italic.')
@@ -58,19 +63,19 @@ def compile_italic_star(line):
     '*'
     '''
     result = ""
-    i = 0 
-    while i < len(line): 
+    i = 0
+    while i < len(line):
         if line[i:i+1] == "*" and line.find("*", i+1) != -1:
             end = line.find("*", i+1)
-            if end != -1: 
+            if end != -1:
                 result += "<i>" + line[i+1: end] + "</i>"
                 i = end + 1
-            else: 
+            else:
                 result += line[i]
                 i += 1
-        else: 
+        else:
             result += line[i]
-            i+=1
+            i += 1
 
     return result
 
@@ -94,19 +99,19 @@ def compile_italic_underscore(line):
     '_'
     '''
     result = ""
-    i = 0 
-    while i < len(line): 
+    i = 0
+    while i < len(line):
         if line[i:i+1] == "_" and line.find("_", i+1) != -1:
             end = line.find("_", i+1)
-            if end != -1: 
+            if end != -1:
                 result += "<i>" + line[i+1: end] + "</i>"
                 i = end + 1
-            else: 
+            else:
                 result += line[i]
                 i += 1
-        else: 
+        else:
             result += line[i]
-            i+=1
+            i += 1
 
     return result
 
@@ -116,11 +121,14 @@ def compile_strikethrough(line):
     Convert "~~strikethrough~~" to "<ins>strikethrough</ins>".
 
     HINT:
-    The strikethrough annotations are very similar to implement as the italic function.
+    The strikethrough annotations are very similar to implement
+    as the italic function.
     The difference is that there are two delimiting characters instead of one.
-    This will require carefully thinking about the range of your for loop and all of your list indexing.
+    This will require carefully thinking about the range
+    of your for loop and all of your list indexing.
 
-    >>> compile_strikethrough('~~This is strikethrough!~~ This is not strikethrough.')
+    >>> compile_strikethrough('~~This is strikethrough!~~
+    This is not strikethrough.')
     '<ins>This is strikethrough!</ins> This is not strikethrough.'
     >>> compile_strikethrough('~~This is strikethrough!~~')
     '<ins>This is strikethrough!</ins>'
@@ -132,21 +140,22 @@ def compile_strikethrough(line):
     '~~'
     '''
     result = ""
-    i = 0 
-    while i < len(line): 
+    i = 0
+    while i < len(line):
         if line[i:i+2] == "~~" and line.find("~~", i+2) != -1:
             end = line.find("~~", i+2)
-            if end != -1: 
+            if end != -1:
                 result += "<ins>" + line[i+2: end] + "</ins>"
                 i = end + 2
-            else: 
+            else:
                 result += line[i]
                 i += 1
-        else: 
+        else:
             result += line[i]
-            i+=1
+            i += 1
 
     return result
+
 
 def compile_bold_stars(line):
     '''
@@ -167,19 +176,19 @@ def compile_bold_stars(line):
     '**'
     '''
     result = ""
-    i = 0 
-    while i < len(line): 
+    i = 0
+    while i < len(line):
         if line[i:i+2] == "**" and line.find("**", i+2) != -1:
             end = line.find("**", i+2)
-            if end != -1: 
+            if end != -1:
                 result += "<b>" + line[i+2: end] + "</b>"
                 i = end + 2
-            else: 
+            else:
                 result += line[i]
                 i += 1
-        else: 
+        else:
             result += line[i]
-            i+=1
+            i += 1
 
     return result
 
@@ -203,19 +212,19 @@ def compile_bold_underscore(line):
     '__'
     '''
     result = ""
-    i = 0 
-    while i < len(line): 
+    i = 0
+    while i < len(line):
         if line[i:i+2] == "__" and line.find("__", i+2) != -1:
             end = line.find("__", i+2)
-            if end != -1: 
+            if end != -1:
                 result += "<b>" + line[i+2: end] + "</b>"
                 i = end + 2
-            else: 
+            else:
                 result += line[i]
                 i += 1
-        else: 
+        else:
             result += line[i]
-            i+=1
+            i += 1
 
     return result
 
@@ -225,23 +234,34 @@ def compile_code_inline(line):
     Add <code> tags.
 
     HINT:
-    This function is like the italics functions because inline code uses only a single character as a delimiter.
-    It is more complex, however, because inline code blocks can contain valid HTML inside of them,
+    This function is like the italics functions because inline code
+    uses only a single character as a delimiter.
+    It is more complex, however, because inline code blocks can
+    contain valid HTML inside of them,
     but we do not want that HTML to get rendered as HTML.
-    Therefore, we must convert the `<` and `>` signs into `&lt;` and `&gt;` respectively.
+    Therefore, we must convert the `<` and `>` signs into `&lt;`
+    and `&gt;` respectively.
 
-    >>> compile_code_inline('You can use backticks like this (`1+2`) to include code in the middle of text.')
-    'You can use backticks like this (<code>1+2</code>) to include code in the middle of text.'
+    >>> compile_code_inline('You can use backticks like this (`1+2`) to include
+    code in the middle of text.')
+    'You can use backticks like this (<code>1+2</code>) to include
+    code in the middle of text.'
     >>> compile_code_inline('This is inline code: `1+2`')
     'This is inline code: <code>1+2</code>'
     >>> compile_code_inline('`1+2`')
     '<code>1+2</code>'
-    >>> compile_code_inline('This example has html within the code: `<b>bold!</b>`')
-    'This example has html within the code: <code>&lt;b&gt;bold!&lt;/b&gt;</code>'
-    >>> compile_code_inline('this example has a math formula in the  code: `1 + 2 < 4`')
-    'this example has a math formula in the  code: <code>1 + 2 &lt; 4</code>'
-    >>> compile_code_inline('this example has a <b>math formula</b> in the  code: `1 + 2 < 4`')
-    'this example has a <b>math formula</b> in the  code: <code>1 + 2 &lt; 4</code>'
+    >>> compile_code_inline('This example has html within
+    the code: `<b>bold!</b>`')
+    'This example has html within the code: <code>&lt;
+    b&gt;bold!&lt;/b&gt;</code>'
+    >>> compile_code_inline('this example has a math
+    formula in the  code: `1 + 2 < 4`')
+    'this example has a math formula in the  code:
+    <code>1 + 2 &lt; 4</code>'
+    >>> compile_code_inline('this example has a <b>math formula</b>
+    in the  code: `1 + 2 < 4`')
+    'this example has a <b>math formula</b> in the  code:
+    <code>1 + 2 &lt; 4</code>'
     >>> compile_code_inline('```')
     '```'
     >>> compile_code_inline('```python3')
@@ -261,7 +281,8 @@ def compile_code_inline(line):
                 i += 1
             else:
                 code = line[i + 1:end]
-                code = code.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+                code = code.replace("&", "&amp;").replace("<", "&lt;")
+                code = code.replace(">", "&gt;")
                 result += "<code>" + code + "</code>"
                 i = end + 1
         else:
@@ -276,36 +297,45 @@ def compile_links(line):
     Add <a> tags.
 
     HINT:
-    The links and images are potentially more complicated because they have many types of delimeters: `[]()`.
-    These delimiters are not symmetric, however, so we can more easily find the start and stop locations using the strings find function.
+    The links and images are potentially more complicated because they
+    have many types of delimeters: `[]()`.
+    These delimiters are not symmetric, however, so we can more easily find
+    the start and stop locations using the strings find function.
 
-    >>> compile_links('Click on the [course webpage](https://github.com/mikeizbicki/cmc-csci040)!')
-    'Click on the <a href="https://github.com/mikeizbicki/cmc-csci040">course webpage</a>!'
-    >>> compile_links('[course webpage](https://github.com/mikeizbicki/cmc-csci040)')
-    '<a href="https://github.com/mikeizbicki/cmc-csci040">course webpage</a>'
-    >>> compile_links('this is wrong: [course webpage]    (https://github.com/mikeizbicki/cmc-csci040)')
-    'this is wrong: [course webpage]    (https://github.com/mikeizbicki/cmc-csci040)'
-    >>> compile_links('this is wrong: [course webpage](https://github.com/mikeizbicki/cmc-csci040')
-    'this is wrong: [course webpage](https://github.com/mikeizbicki/cmc-csci040'
+    >>> compile_links('Click on the [course webpage](https://github.com/
+    mikeizbicki/cmc-csci040)!')
+    'Click on the <a href="https://github.com/mikeizbicki/cmc-csci040"
+    >course webpage</a>!'
+    >>> compile_links('[course webpage](https://github.com/
+    mikeizbicki/cmc-csci040)')
+    '<a href="https://github.com/mikeizbicki/cmc-csci040"
+    >course webpage</a>'
+    >>> compile_links('this is wrong: [course webpage]
+    (https://github.com/mikeizbicki/cmc-csci040)')
+    'this is wrong: [course webpage]
+    (https://github.com/mikeizbicki/cmc-csci040)'
+    >>> compile_links('this is wrong: [course webpage]
+    (https://github.com/mikeizbicki/cmc-csci040')
+    'this is wrong: [course webpage]
+    (https://github.com/mikeizbicki/cmc-csci040'
     '''
-   
     result = ""
-    i = 0 
+    i = 0
 
     while i < len(line):
         if line[i] == "[":
             close_b = line.find("]", i + 1)
 
-            if close_b == -1: 
+            if close_b == -1:
                 result += line[i:]
-                break 
+                break
 
             if close_b + 1 < len(line) and line[close_b + 1] == "(":
                 close_p = line.find(")", close_b + 2)
 
-                if close_p == -1: 
+                if close_p == -1:
                     result += line[i:]
-                    break 
+                    break
 
                 text = line[i + 1:close_b]
                 url = line[close_b + 2:close_p]
@@ -316,13 +346,10 @@ def compile_links(line):
             else:
                 result += line[i]
                 i += 1
-        else: 
+        else:
             result += line[i]
             i += 1
     return result
-
-
-    
 
 
 def compile_images(line):
@@ -334,31 +361,38 @@ def compile_images(line):
     except that images have a leading `!`.
     So your code here should be based off of the <a> tag code.
 
-    >>> compile_images('[Mike Izbicki](https://avatars1.githubusercontent.com/u/1052630?v=2&s=460)')
-    '[Mike Izbicki](https://avatars1.githubusercontent.com/u/1052630?v=2&s=460)'
-    >>> compile_images('![Mike Izbicki](https://avatars1.githubusercontent.com/u/1052630?v=2&s=460)')
-    '<img src="https://avatars1.githubusercontent.com/u/1052630?v=2&s=460" alt="Mike Izbicki" />'
-    >>> compile_images('This is an image of Mike Izbicki: ![Mike Izbicki](https://avatars1.githubusercontent.com/u/1052630?v=2&s=460)')
-    'This is an image of Mike Izbicki: <img src="https://avatars1.githubusercontent.com/u/1052630?v=2&s=460" alt="Mike Izbicki" />'
+    >>> compile_images('[Mike Izbicki](https://avatars1.githubusercontent.com
+    /u/1052630?v=2&s=460)')
+    '[Mike Izbicki](https://avatars1.githubusercontent.com/u/
+    1052630?v=2&s=460)'
+    >>> compile_images('![Mike Izbicki](https://avatars1.githubusercontent.com/
+    u/1052630?v=2&s=460)')
+    '<img src="https://avatars1.githubusercontent.com/u/1052630?v=2&s=460"
+    alt="Mike Izbicki" />'
+    >>> compile_images('This is an image of Mike Izbicki:
+    ![Mike Izbicki](https://avatars1.
+    githubusercontent.com/u/1052630?v=2&s=460)')
+    'This is an image of Mike Izbicki:
+    <img src="https://avatars1.githubusercontent.
+    com/u/1052630?v=2&s=460" alt="Mike Izbicki" />'
     '''
-   
     result = ""
-    i = 0 
+    i = 0
 
     while i < len(line):
         if i + 1 < len(line) and line[i] == "!" and line[i+1] == "[":
             close_b = line.find("]", i + 2)
 
-            if close_b == -1: 
+            if close_b == -1:
                 result += line[i:]
-                break 
+                break
 
             if close_b + 1 < len(line) and line[close_b + 1] == "(":
                 close_p = line.find(")", close_b + 2)
 
-                if close_p == -1: 
+                if close_p == -1:
                     result += line[i:]
-                    break 
+                    break
 
                 text = line[i + 2:close_b]
                 url = line[close_b + 2:close_p]
@@ -369,7 +403,7 @@ def compile_images(line):
             else:
                 result += line[i]
                 i += 1
-        else: 
+        else:
             result += line[i]
             i += 1
     return result
