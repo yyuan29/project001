@@ -145,7 +145,7 @@ def compile_lines(text):
     in_code = False 
 
     for line in lines:
-        print("line = ", line)
+
         stripped = line.strip()
         
         if stripped == "```":
@@ -156,13 +156,9 @@ def compile_lines(text):
                 new_lines.append("<pre>")
                 in_code = True 
             continue
-        print("pos1")
-        print("line = ", line)
         if in_code:
             new_lines.append(line)
             continue
-        print("pos2")
-        print("line = ", line)
         if stripped=='':
             if in_paragraph:
                 new_lines.append("</p>")
@@ -176,12 +172,7 @@ def compile_lines(text):
             new_lines.append("<p>")
             in_paragraph = True
 
-        print("pos3")  
-        print("line = ", line) 
-        #line = stripped
-        #print("pos3a", line)
         line = compile_headers(line)
-        print("pos3b = ", line)
         line = compile_strikethrough(line)
         line = compile_bold_stars(line)
         line = compile_bold_underscore(line)
@@ -191,7 +182,7 @@ def compile_lines(text):
         line = compile_images(line)
         line = compile_links(line)
         new_lines.append(line)
-        print("new_lines=", new_lines)
+
     if in_paragraph: 
         new_lines.append("</p>")
 
@@ -268,7 +259,7 @@ def minify(html):
     >>> minify('a\n\n\n\n\n\n\n\n\n\n\n\n\n\nb\n\n\n\n\n\n\n\n\n\n')
     'a b'
     '''
-    return html
+    return " ".join(html.split())
 
 
 def convert_file(input_file, add_css):
@@ -297,5 +288,5 @@ def convert_file(input_file, add_css):
     html = minify(html)
 
     # write the output file
-    with open(input_file[:-2]+'html', 'w') as f:
+    with open(input_file[:-3]+'html', 'w') as f:
         f.write(html)

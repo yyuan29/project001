@@ -27,11 +27,12 @@ def compile_headers(line):
     '      # this is not a header'
     '''
     result = ""
-    for i in range(1, 7):
+    for i in range(6, 0, -1):
         prefix = '#'*i + " "
         if line[:i+1] == prefix: 
             result = "<h" + f"{i}" + "> " + line[i+1:] + "</h" + f"{i}" + ">"
-
+    if result == "": 
+        return line
     return result
 
 
@@ -246,23 +247,27 @@ def compile_code_inline(line):
     >>> compile_code_inline('```python3')
     '```python3'
     '''
+    if line.startswith("```"):
+        return line
+
     result = ""
-    i = 0 
-    while i < len(line): 
-        if line[i:+3] =="```":
-            result += line[i: i + 3]
-            i += 3
-        elif line[i] == "`":
-            end = line.find("`", i+1)
-            result = "<code>" + line[i+1: end] + "</code>"
-            i = end + 1
-        elif line[i] == "<":
-            end = line.find("<", i+1)
-            result = "&lt" + line[i+1: end] + "&gt"
-            i = end + 1
-        else: 
+    i = 0
+
+    while i < len(line):
+        if line[i] == "`":
+            end = line.find("`", i + 1)
+            if end == -1:
+                result += line[i]
+                i += 1
+            else:
+                code = line[i + 1:end]
+                code = code.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+                result += "<code>" + code + "</code>"
+                i = end + 1
+        else:
             result += line[i]
-            i+=1
+            i += 1
+
     return result
 
 
@@ -341,7 +346,7 @@ def compile_images(line):
     i = 0 
 
     while i < len(line):
-        if line[i] == "!" and line[i+1] == "[" and i + 1 < len(line):
+        if i + 1 < len(line) and line[i] == "!" and line[i+1] == "[":
             close_b = line.find("]", i + 2)
 
             if close_b == -1: 
@@ -358,7 +363,7 @@ def compile_images(line):
                 text = line[i + 2:close_b]
                 url = line[close_b + 2:close_p]
 
-                result += f'<img src="{url}">{text} />'
+                result += f'<img src="{url}" alt="{text}" />'
                 i = close_p + 1
 
             else:
