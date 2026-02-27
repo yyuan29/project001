@@ -193,6 +193,16 @@ def compile_lines(text):
         line = compile_links(line)
         new_lines.append(line)
 
+     if "</code>" in line:
+        parts = line.split("</code>", 1)
+        before = parts[0] + "</code>"
+        after = parts[1].lstrip()
+
+        if after:
+            new_lines.append(before)
+            new_lines.append(after)
+            continue
+        
     if in_paragraph:
         new_lines.append("</p>")
 
