@@ -162,16 +162,13 @@ def compile_lines(text):
         if stripped == "```":
             if in_code:
                 new_lines.append("</pre>")
-                new_lines.append("")
                 in_code = False
             else:
-                if in_paragraph:
-                    new_lines.append("</p>")
-                    in_paragraph = False
                 new_lines.append("<pre>")
                 in_code = True
             continue
         if in_code:
+            line = line.replace("</code> ", "</code>\n")
             new_lines.append(line)
             continue
         if stripped == '':
