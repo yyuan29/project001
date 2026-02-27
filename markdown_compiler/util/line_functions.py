@@ -290,7 +290,7 @@ def compile_links(line):
                 break
 
             # CASE: "] (" → malformed spacing
-            if close_b + 2 < len(line) and line[close_b + 1] == " " and line[close_b+2] == "(":
+            if close_b + 2 < len(line) and line[close_b + 1] == " " and line[close_b + 2] == "(":
                 result += line[i:close_b + 1] + "\n    "
                 i = close_b + 2
                 continue
