@@ -3,7 +3,17 @@ This file contains functions that work on entire documents at a time
 (and not line-by-line).
 '''
 
-from markdown_compiler.util.line_functions import *
+from markdown_compiler.util.line_functions import (
+    compile_headers,
+    compile_strikethrough,
+    compile_bold_stars,
+    compile_bold_underscore,
+    compile_italic_star,
+    compile_italic_underscore,
+    compile_code_inline,
+    compile_images,
+    compile_links,
+)
 
 
 def compile_lines(text):
@@ -13,7 +23,7 @@ def compile_lines(text):
     NOTE:
     This function calls all of the functions you created 
     above to convert the full markdown file into HTML.
-    This function also handles multiline markdown 
+    This function also handles multiline markdown
     like <p> tags and <pre> tags;
     because these are multiline commands, they cannot work 
     with the line-by-line style of commands above.
@@ -30,7 +40,8 @@ def compile_lines(text):
     from these test cases is how multiline tests can be formatted.
 
     >>> compile_lines('This is a **bold** _italic_ `code` test.\nAnd *another line*!\n')
-    '<p>\nThis is a <b>bold</b> <i>italic</i> <code>code</code> 
+    '<p>\nThis is a <b>bold</b> <i>italic</i>
+    <code>code</code> 
     test.\nAnd <i>another line</i>!\n</p>'
 
     >>> compile_lines("""
@@ -145,9 +156,7 @@ def compile_lines(text):
     in_code = False 
 
     for line in lines:
-
         stripped = line.strip()
-        
         if stripped == "```":
             if in_code: 
                 new_lines.append("</pre>")
@@ -201,14 +210,19 @@ def markdown_to_html(markdown, add_css):
     optionally adding CSS formatting.
 
     NOTE:
-    This function is separated out from the `compile_lines` function so that the doctests are much simpler.
+    This function is separated out from the `compile_lines`
+    function so that the doctests are much simpler.
     In particular, by splitting these functions in two,
-    there's no need to add all of the HTML boilerplate code to the doctests in `compile_lines`.
+    there's no need to add all of the HTML boilerplate code to
+    the doctests in `compile_lines`.
 
     NOTE:
-    The code for this function is simple enough that we don't even have a "real" doctest.
-    The only purpose of this doctest is to run the function and ensure that there are no errors.
-    The `assert` function prints no output whenever the input is "truthy".
+    The code for this function is simple enough that we don't
+    even have a "real" doctest.
+    The only purpose of this doctest is to run the function and
+    ensure that there are no errors.
+    The `assert` function prints no output whenever
+    the input is "truthy".
 
     >>> assert(markdown_to_html('this *is* a _test_', False))
     >>> assert(markdown_to_html('this *is* a _test_', True))
@@ -243,7 +257,8 @@ def minify(html):
 
     NOTE:
     When we transfer HTML files over the internet,
-    we'd like them to be as small as possible in order to save bandwidth and make the webpage load faster.
+    we'd like them to be as small as possible in order to
+    save bandwidth and make the webpage load faster.
     Minifying html documents is an important step for webservers.
     It may not seem like much, but at the scale of Google/Facebook,
     it can reduce costs by millions of dollars annually.
@@ -273,10 +288,12 @@ def convert_file(input_file, add_css):
     then the output filename will be `README.html`.
 
     NOTE:
-    It is difficult to write meaningful doctests for functions that deal with files.
+    It is difficult to write meaningful doctests for functions
+    that deal with files.
     This is because we would have to create a bunch of different files to do so.
     Therefore, there are no tests for this function.
-    But we can still be confident that this function will work because of the extensive tests on the "helper functions" that this function depends on.
+    But we can still be confident that this function will work because 
+    of the extensive tests on the "helper functions" that this function depends on.
     '''
 
     # validate that the input file is a markdown file
