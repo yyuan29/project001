@@ -167,7 +167,6 @@ def compile_lines(text):
                 in_code = True
             continue
         if in_code:
-            line = line.replace("</code> ", "</code>\n")
             new_lines.append(line)
             continue
         if stripped == '':
@@ -191,7 +190,7 @@ def compile_lines(text):
         line = compile_code_inline(line)
         line = compile_images(line)
         line = compile_links(line)
-        new_lines.append(line)
+        new_lines.extend(line.split('\n'))
 
     if in_paragraph:
         new_lines.append("</p>")

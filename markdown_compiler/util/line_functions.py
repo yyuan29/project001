@@ -228,7 +228,6 @@ def compile_bold_underscore(line):
 
     return result
 
-
 def compile_code_inline(line):
     '''
     Add <code> tags.
