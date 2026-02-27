@@ -290,21 +290,21 @@ def compile_links(line):
                 break
 
             # CASE: "] (" → malformed spacing
-            if close_b + 2 < len(line) and line[close_b+1] == " " and line[close_b+2] == "(":
-                result += line[i:close_b+1] + "\n    "
+            if close_b + 2 < len(line) and line[close_b + 1] == " " and line[close_b+2] == "(":
+                result += line[i:close_b + 1] + "\n    "
                 i = close_b + 2
                 continue
 
             # CASE: proper "(" immediately after "]"
-            if close_b + 1 < len(line) and line[close_b+1] == "(":
+            if close_b + 1 < len(line) and line[close_b + 1] == "(":
                 close_p = line.find(")", close_b + 2)
 
                 if close_p == -1:
                     result += line[i:]
                     break
 
-                text = line[i+1:close_b]
-                url = line[close_b+2:close_p]
+                text = line[i + 1:close_b]
+                url = line[close_b + 2:close_p]
 
                 result += f'<a href="{url}">{text}</a>'
                 i = close_p + 1
