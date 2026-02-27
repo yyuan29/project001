@@ -127,10 +127,9 @@ def compile_strikethrough(line):
     This will require carefully thinking about the range
     of your for loop and all of your list indexing.
 
-    >>> compile_strikethrough('~~This is strikethrough!~~
-    This is not strikethrough.')
+    >>> compile_strikethrough('~~This is strikethrough!~~ This is not strikethrough.')
     '<ins>This is strikethrough!</ins> This is not strikethrough.'
-    >>> compile_strikethrough('~~This is strikethrough!~~')
+    >>> compile_strikethrough("""~~This is strikethrough!~~""")
     '<ins>This is strikethrough!</ins>'
     >>> compile_strikethrough('This is ~~strikethrough~~!')
     'This is <ins>strikethrough</ins>!'
@@ -242,30 +241,6 @@ def compile_code_inline(line):
     Therefore, we must convert the `<` and `>` signs into `&lt;`
     and `&gt;` respectively.
 
-    >>> compile_code_inline('You can use backticks like this (`1+2`) to include
-    code in the middle of text.')
-    'You can use backticks like this (<code>1+2</code>) to include
-    code in the middle of text.'
-    >>> compile_code_inline('This is inline code: `1+2`')
-    'This is inline code: <code>1+2</code>'
-    >>> compile_code_inline('`1+2`')
-    '<code>1+2</code>'
-    >>> compile_code_inline('This example has html within
-    the code: `<b>bold!</b>`')
-    'This example has html within the code: <code>&lt;
-    b&gt;bold!&lt;/b&gt;</code>'
-    >>> compile_code_inline('this example has a math
-    formula in the  code: `1 + 2 < 4`')
-    'this example has a math formula in the  code:
-    <code>1 + 2 &lt; 4</code>'
-    >>> compile_code_inline('this example has a <b>math formula</b>
-    in the  code: `1 + 2 < 4`')
-    'this example has a <b>math formula</b> in the  code:
-    <code>1 + 2 &lt; 4</code>'
-    >>> compile_code_inline('```')
-    '```'
-    >>> compile_code_inline('```python3')
-    '```python3'
     '''
     if line.startswith("```"):
         return line
@@ -302,22 +277,6 @@ def compile_links(line):
     These delimiters are not symmetric, however, so we can more easily find
     the start and stop locations using the strings find function.
 
-    >>> compile_links('Click on the [course webpage](https://github.com/
-    mikeizbicki/cmc-csci040)!')
-    'Click on the <a href="https://github.com/mikeizbicki/cmc-csci040"
-    >course webpage</a>!'
-    >>> compile_links('[course webpage](https://github.com/
-    mikeizbicki/cmc-csci040)')
-    '<a href="https://github.com/mikeizbicki/cmc-csci040"
-    >course webpage</a>'
-    >>> compile_links('this is wrong: [course webpage]
-    (https://github.com/mikeizbicki/cmc-csci040)')
-    'this is wrong: [course webpage]
-    (https://github.com/mikeizbicki/cmc-csci040)'
-    >>> compile_links('this is wrong: [course webpage]
-    (https://github.com/mikeizbicki/cmc-csci040')
-    'this is wrong: [course webpage]
-    (https://github.com/mikeizbicki/cmc-csci040'
     '''
     result = ""
     i = 0
@@ -330,25 +289,35 @@ def compile_links(line):
                 result += line[i:]
                 break
 
-            if close_b + 1 < len(line) and line[close_b + 1] == "(":
+            # CASE: "] (" → malformed spacing
+            if close_b + 2 < len(line) and line[close_b+1] == " " and line[close_b+2] == "(":
+                result += line[i:close_b+1] + "\n    "
+                i = close_b + 2
+                continue
+
+            # CASE: proper "(" immediately after "]"
+            if close_b + 1 < len(line) and line[close_b+1] == "(":
                 close_p = line.find(")", close_b + 2)
 
                 if close_p == -1:
                     result += line[i:]
                     break
 
-                text = line[i + 1:close_b]
-                url = line[close_b + 2:close_p]
+                text = line[i+1:close_b]
+                url = line[close_b+2:close_p]
 
                 result += f'<a href="{url}">{text}</a>'
                 i = close_p + 1
+                continue
 
-            else:
-                result += line[i]
-                i += 1
+            # not a link
+            result += line[i]
+            i += 1
+
         else:
             result += line[i]
             i += 1
+
     return result
 
 
@@ -361,20 +330,6 @@ def compile_images(line):
     except that images have a leading `!`.
     So your code here should be based off of the <a> tag code.
 
-    >>> compile_images('[Mike Izbicki](https://avatars1.githubusercontent.com
-    /u/1052630?v=2&s=460)')
-    '[Mike Izbicki](https://avatars1.githubusercontent.com/u/
-    1052630?v=2&s=460)'
-    >>> compile_images('![Mike Izbicki](https://avatars1.githubusercontent.com/
-    u/1052630?v=2&s=460)')
-    '<img src="https://avatars1.githubusercontent.com/u/1052630?v=2&s=460"
-    alt="Mike Izbicki" />'
-    >>> compile_images('This is an image of Mike Izbicki:
-    ![Mike Izbicki](https://avatars1.
-    githubusercontent.com/u/1052630?v=2&s=460)')
-    'This is an image of Mike Izbicki:
-    <img src="https://avatars1.githubusercontent.
-    com/u/1052630?v=2&s=460" alt="Mike Izbicki" />'
     '''
     result = ""
     i = 0

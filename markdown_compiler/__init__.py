@@ -39,7 +39,8 @@ def compile_lines(text):
     For your assignment, the most important thing to take away
     from these test cases is how multiline tests can be formatted.
     
-    >>> compile_lines('This is a **bold** _italic_`code` test.\nAnd *another line*!\n')
+    >>> compile_lines("""This is a **bold** _italic_`code` test.
+    ... \nAnd *another line*!\n""")
     '<p>\nThis is a <b>bold</b> <i>italic</i>
     <code>code</code>
     test.\nAnd <i>another line</i>!\n</p>'
@@ -176,9 +177,10 @@ def compile_lines(text):
                 new_lines.append('')
             continue
 
-        if not in_paragraph and not stripped.startswith('#'):
-            new_lines.append("<p>")
-            in_paragraph = True
+        else:
+            if not in_paragraph and not stripped.startswith('#'):
+                new_lines.append("<p>")
+                in_paragraph = True
 
         line = compile_headers(line)
         line = compile_strikethrough(line)
