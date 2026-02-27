@@ -38,9 +38,8 @@ def compile_lines(text):
     NOTE:
     For your assignment, the most important thing to take away
     from these test cases is how multiline tests can be formatted.
-
-    >>> compile_lines('This is a **bold** _italic_
-    `code` test.\nAnd *another line*!\n')
+    
+    >>> compile_lines('This is a **bold** _italic_`code` test.\nAnd *another line*!\n')
     '<p>\nThis is a <b>bold</b> <i>italic</i>
     <code>code</code>
     test.\nAnd <i>another line</i>!\n</p>'
@@ -190,11 +189,11 @@ def compile_lines(text):
         line = compile_code_inline(line)
         line = compile_images(line)
         line = compile_links(line)
-        new_lines.extend(line.split('\n'))
-
+        new_lines.append(line)
+    '''
     if in_paragraph:
         new_lines.append("</p>")
-
+    '''
     new_text = '\n'.join(new_lines)
 
     return new_text
