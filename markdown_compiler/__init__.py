@@ -79,7 +79,6 @@ def compile_lines(text):
         line = compile_images(line)
         line = compile_links(line)
         new_lines.append(line)
-    
     new_text = '\n'.join(new_lines)
 
     return new_text
